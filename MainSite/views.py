@@ -88,3 +88,6 @@ def work_single(request):
     context = {}
     return render(request, 'MainSite/work-single.html', context)
 
+def error_404(request):
+    context = {}
+    return render(request, 'MainSite/404.html', context)

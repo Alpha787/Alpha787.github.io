@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, about, blog, contact, services, work, work_single
+from .views import index, about, blog, contact, services, work, work_single, error_404
 from MyDjangoNFT.views import LeadListCreate
 from django.contrib import admin
 from django.urls import path
@@ -14,6 +14,7 @@ urlpatterns = [
     path('services.html', services, name='services'),
     path('work.html', work, name='work'),
     path('work-single.html', work_single, name='work_single'),
+    path('404.html', error_404, name='error_404'),
 
 ]
 
