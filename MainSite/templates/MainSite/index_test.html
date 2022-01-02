@@ -1,0 +1,23 @@
+{#{% extends "index.html" %}#}
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h1>Hello World</h1>
+    <form action="https://www.google.com">
+        <input type="text" name="query">
+        <input type="submit">
+    </form>
+    {% block content %}
+        <h3>This wil be replaced</h3>
+    {% endblock content %}
+</body>
+</html>
+
+
+
+
+
+
