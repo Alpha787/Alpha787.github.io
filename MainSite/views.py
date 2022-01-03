@@ -29,10 +29,27 @@ def blog(request):
     return render(request, 'MainSite/blog.html', context)
 
 def contact(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        name = str(first_name) + str(last_name)
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        data = {
+            'name': name,
+            'email': email,
+            'subject': subject,
+            'message': message
+        }
+        message = f"New message:{data['message']}" \
+                  f"From: {data['email']}"
+        send_mail(data['subject'], message, '', ['olofmeister22668@gmail.com'])
     context = {}
     return render(request, 'MainSite/contact.html', context)
 
-# def send_contact(request):
+# def get_contact_1(request):
 #     if request.method == "POST":
 #         first_name = request.POST['first_name']
 #         last_name = request.POST['last_name']
@@ -51,29 +68,31 @@ def contact(request):
 #         return render(request, 'MainSite/contact.html', {})
 
 
-def get_contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            subject = 'Пробное сообщение'
-            body = {
-                'first_name': form.cleaned_data['first_name'],
-                'last_name': form.cleaned_data['last_name'],
-                'email': form.cleaned_data['email_address'],
-                'subject': form.cleaned_data['subject'],
-                'message': form.cleaned_data['message'],
-            }
-            message = '\n'.join(body.values())
-            try:
-                send_mail(subject, message,
-                          'vasya22668@gmail.com',
-                          ['vasya22668@gmail.com'])
-            except BadHeaderError:
-                return HttpResponse('Найден некорректный заголовок')
-            return redirect('homepage')
+# def get_contact_2(request):
+#     if request.method == 'POST':
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             subject = 'Пробное сообщение'
+#             body = {
+#                 'first_name': form.cleaned_data['first_name'],
+#                 'last_name': form.cleaned_data['last_name'],
+#                 'email': form.cleaned_data['email_address'],
+#                 'subject': form.cleaned_data['subject'],
+#                 'message': form.cleaned_data['message'],
+#             }
+#             message = '\n'.join(body.values())
+#             try:
+#                 send_mail(subject, message,
+#                           '',
+#                           ['olofmeister22668@gmail.com'])
+#             except BadHeaderError:
+#                 return HttpResponse('Найден некорректный заголовок')
+#             return redirect('homepage')
+#
+#     form = ContactForm()
+#     return render(request, 'MainSite/contact.html', {'form': form})
 
-    form = ContactForm()
-    return render(request, 'MainSite/contact.html', {'form': form})
+# def get_contact_3(request):
 
 
 def services(request):
