@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
+# new changes
 # Config data
 *.ini
 
