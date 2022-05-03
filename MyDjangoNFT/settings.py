@@ -1,28 +1,21 @@
 import os
 from pathlib import Path
-import django.core.mail.backends.console
 import rest_framework
 import django_heroku
 import dj_database_url
-from decouple import config
+from configparser import ConfigParser
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+config = ConfigParser()
+config.read("config.ini")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+SECRET_KEY = config.get('SETTINGS','secret_key')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zwd@&j0xbwbgepppu0ves+f3*7=ix&qfyg13w4!vxg5eilu7z7'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -33,7 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'MainSite.apps.MainsiteConfig',
     'rest_framework',
+    'django.contrib.sitemaps',
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,9 +63,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'MyDjangoNFT.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -78,9 +70,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,8 +87,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -109,9 +96,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -124,9 +108,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -134,19 +115,18 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     )
 }
-
-# myaccount.google.com/lesssecureapps
-# accounts.google.com/DisplayUnlockCaptcha
-# myaccount.google.com/apppasswords
-# Email settings
+# TODO: разобраться с отправкой писем на почту и доработать
+EMAIL_USE_SSL = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = config.get('EMAIL_SETTINGS', 'email_host_user')
+EMAIL_HOST_PASSWORD = config.get('EMAIL_SETTINGS', 'email_host_password')
 EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
+# SERVER_EMAIL = config.get('SERVER_EMAIL')
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 django_heroku.settings(locals())
+
 

@@ -1,0 +1,12 @@
+User-Agent: Googlebot
+User-Agent: Bingbot
+User-Agent: Slurp
+
+Disallow: /page
+Sitemap: https://basil-page.herokuapp.com/sitemap.xml
+
+
+
+
+
+
